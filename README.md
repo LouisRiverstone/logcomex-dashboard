@@ -41,6 +41,12 @@ docker compose up -d
 Execute os seguintes comandos para configurar a aplicação:
 
 ```bash
+# Instalando dependencias backend
+docker compose exec dashboard-logcomex-app composer install
+
+# Instalando dependencias frontend
+docker compose exec dashboard-logcomex-app npm install
+
 # Gerar uma nova chave de aplicação
 docker compose exec dashboard-logcomex-app php artisan key:generate
 

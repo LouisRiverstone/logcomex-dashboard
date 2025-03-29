@@ -30,10 +30,4 @@ RUN docker-php-ext-install \
 
 COPY . .
 
-RUN composer install
-
-RUN npm install
-
-RUN npm run build
-
 ENTRYPOINT [ "tail", "-f", "/dev/null" ]
