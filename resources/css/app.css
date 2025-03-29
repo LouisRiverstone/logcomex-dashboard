@@ -1,0 +1,142 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source "../**/*.blade.php";
+@source "../**/*.js";
+@source "../**/*.vue";
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: 139 92 246; /* purple-500 */
+  }
+
+  /* Personalização de scrollbar para tema roxo */
+  body {
+    @apply bg-gray-100 dark:bg-gray-950 transition-colors duration-200;
+  }
+
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-100 dark:bg-gray-900;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-purple-400 dark:bg-purple-600 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-purple-500 dark:bg-purple-700;
+  }
+}
+
+@layer components {
+  /* Dashboard Components */
+  .sidebar-link {
+    @apply flex items-center px-4 py-2 text-gray-400 hover:text-white hover:bg-gray-800 transition-colors rounded-lg;
+  }
+
+  .sidebar-link.active {
+    @apply bg-purple-500/10 text-purple-400 border-l-4 border-purple-500 font-medium;
+  }
+
+  .sidebar-icon {
+    @apply h-5 w-5 mr-3;
+  }
+
+  .stat-card {
+    @apply border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 rounded-lg shadow-sm hover:border-purple-200 dark:hover:border-purple-800 transition-colors;
+  }
+
+  .card {
+    @apply border border-gray-200 dark:border-gray-800 rounded-lg shadow-sm bg-white dark:bg-gray-900;
+  }
+
+  /* Animação de pulse para carregamento */
+  .pulse {
+    @apply animate-pulse bg-gray-200 dark:bg-gray-700 rounded;
+  }
+
+  /* Efeito de hover shine */
+  .hover-shine {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hover-shine::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: skewX(-25deg);
+    transition: all 0.75s;
+  }
+
+  .hover-shine:hover::after {
+    animation: shine 1.5s;
+  }
+
+  @keyframes shine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+  }
+
+  /* Estilos para tema escuro */
+  .dark .card-hover {
+    @apply hover:bg-gray-800/50;
+  }
+
+  /* Transições suaves */
+  .slide-fade-enter-active, .slide-fade-leave-active {
+    @apply transition-all duration-300;
+  }
+
+  .slide-fade-enter-from, .slide-fade-leave-to {
+    @apply transform translate-y-2 opacity-0;
+  }
+
+  /* Badge de notificação */
+  .notification-badge {
+    @apply absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500;
+  }
+
+  /* Dashboard Title */
+  .dashboard-title {
+    @apply text-2xl font-bold text-gray-900 dark:text-white;
+  }
+}
+
+/* Estilos para Dropdown com animação */
+.dropdown-menu {
+  @apply transition-all duration-200 transform opacity-0 scale-95 pointer-events-none;
+}
+
+.dropdown-menu.show {
+  @apply opacity-100 scale-100 pointer-events-auto;
+}
+
+/* Personalização do tema para o ChartJS */
+:root {
+  --chart-grid-color: rgba(226, 232, 240, 0.6);
+  --chart-text-color: rgba(100, 116, 139, 1);
+}
+
+.dark {
+  --chart-grid-color: rgba(51, 65, 85, 0.6);
+  --chart-text-color: rgba(148, 163, 184, 1);
+}

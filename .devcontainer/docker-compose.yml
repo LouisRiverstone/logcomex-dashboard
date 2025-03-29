@@ -1,0 +1,63 @@
+version: "3.8"
+services:
+    dashboard_logcomex_devcontainer:
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        ports:
+            - "${APP_PORT:-8000}:8000"
+            - "5173:5173"
+        volumes:
+            - ".:/php/laravel"
+        networks:
+            - dashboard_logcomex_network
+        depends_on:
+            - dashboard_logcomex_mysql_devcontainer
+
+    dashboard_logcomex_mysql_devcontainer:
+        image: "mysql/mysql-server:8.0"
+        ports:
+            - "${FORWARD_DB_PORT:-3306}:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: ""
+            MYSQL_ROOT_HOST: "%"
+            MYSQL_DATABASE: "laravel"
+            MYSQL_USER: "root"
+            MYSQL_PASSWORD: ""
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+        volumes:
+            - "dashboard_logcomex_mysql_devcontainer_volume:/var/lib/mysql"
+            - "./mysql/init:/docker-entrypoint-initdb.d"
+        networks:
+            - dashboard_logcomex_network
+        healthcheck:
+            test:
+                - CMD
+                - mysqladmin
+                - ping
+                - "-p${DB_PASSWORD}"
+            retries: 3
+            timeout: 5s
+
+    dashboard_logcomex_phpmyadmin_devcontainer:
+        image: phpmyadmin/phpmyadmin:latest
+        environment:
+            PMA_HOST: "dashboard_logcomex_mysql_devcontainer"
+            PMA_USER: "root"
+            PMA_PASSWORD: ""
+        ports:
+            - 8081:80
+        networks:
+            - dashboard_logcomex_network
+        depends_on:
+            - dashboard_logcomex_mysql_devcontainer
+
+networks:
+    dashboard_logcomex_network:
+        driver: bridge
+        
+volumes:
+    dashboard_logcomex_mysql_devcontainer_volume:
+        driver: local

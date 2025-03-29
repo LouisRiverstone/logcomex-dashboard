@@ -1,0 +1,91 @@
+<!-- Queria muito fazer esses gráficos com o chartjs, mas não vai dar tempo -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+      <ChartCard
+        title="Receita por período"
+        :loading="loadingStates.revenue"
+        :error="errors.revenue"
+        :filter-options="{
+          showPeriod: true,
+          showComparison: true,
+          showDateRange: true,
+          showRevenueTypes: true,
+          revenueTypes: [
+            { id: 'sales', name: 'Sales' },
+            { id: 'subscriptions', name: 'Subscriptions' },
+            { id: 'refunds', name: 'Refunds' },
+          ],
+        }"
+        @filter-change="handleRevenueFilterChange"
+        @refresh="fetchRevenueData"
+      >
+        <LineChart
+          v-if="revenueData && revenueData.labels && revenueData.datasets"
+          :labels="revenueData.labels"
+          :datasets="revenueData.datasets"
+        />
+      </ChartCard>
+
+      <ChartCard
+        title="Visitas por período"
+        :loading="loadingStates.visitors"
+        :error="errors.visitors"
+        :filter-options="{
+          showPeriod: true,
+          showDateRange: true,
+          showCategories: true,
+          showSearch: true,
+          showSort: true,
+          categories: [
+            { id: 'source', name: 'By Source' },
+            { id: 'region', name: 'By Region' },
+            { id: 'device', name: 'By Device' },
+            { id: 'browser', name: 'By Browser' },
+            { id: 'date', name: 'By Date' },
+          ],
+          defaultPeriod: '30d',
+          sortOptions: [
+            { id: 'date', name: 'Date' },
+            { id: 'visitors', name: 'Visitors' },
+          ],
+        }"
+        @filter-change="handleVisitorsFilterChange"
+        @refresh="fetchVisitorsData"
+      >
+        <LineChart
+          v-if="visitorsData && visitorsData.labels && visitorsData.datasets"
+          :labels="visitorsData.labels"
+          :datasets="visitorsData.datasets"
+        />
+      </ChartCard>
+    </div>
+
+       <!-- Product Ratings -->
+      <ChartCard
+        title="Avaliações de Produtos"
+        :loading="loadingStates.productRating"
+        :error="errors.productRating"
+        :filter-options="{
+          showPeriod: true,
+          showDateRange: true,
+          showProducts: true,
+          showCompetitors: true,
+          defaultPeriod: '30d',
+        }"
+        @filter-change="handleProductRatingFilterChange"
+        @refresh="fetchProductRatingData"
+      >
+        <BarChart
+          v-if="
+            productRatingData && productRatingData.products && productRatingData.products.length
+          "
+          :labels="productRatingData.products.map((p) => p.name)"
+          :datasets="[
+            {
+              label: 'Rating',
+              data: productRatingData.products.map((p) => p.rating),
+              backgroundColor: 'rgba(139, 92, 246, 0.8)',
+            },
+          ]"
+        />
+      </ChartCard>
+

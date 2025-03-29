@@ -1,0 +1,30 @@
+{
+    "name": "Dashboard Logcomex SPA",
+    "dockerComposeFile": ["docker-compose.yml"],
+    "service": "dashboard_logcomex_devcontainer",
+    "workspaceFolder": "/php/laravel",
+    "mounts": [
+        "source=..,target=/php/laravel",
+        "source=${localEnv:HOME}/.ssh/id_rsa,target=/root/.ssh/id_rsa,type=bind"
+    ],
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "bmewburn.vscode-intelephense-client",
+                "laravel.vscode-laravel",
+                "mikestead.dotenv",
+                "msamgan.laravel-pint-vscode",
+                "sanderronde.phpstan-vscode",
+                "usernamehw.errorlens",
+                "Vue.volar",
+                "vitest.explorer",
+                "dbaeumer.vscode-eslint",
+                "EditorConfig.EditorConfig",
+                "esbenp.prettier-vscode"
+            ],
+            "settings": {
+                "editor.laravel.pint.enabled": true
+            }
+        }
+    }
+}
